@@ -17,18 +17,16 @@ import (
 )
 
 func Dot11Freq2Chan(freq int) int {
-	if freq <= 2472 { // 2.4 GHz Wi-Fi
+	if freq <= 2472 {
 		return ((freq - 2412) / 5) + 1
-	} else if freq == 2484 { // Channel 14 special
+	} else if freq == 2484 {
 		return 14
-	} else if freq >= 5150 && freq <= 5850 { // 5 GHz Wi-Fi
-		if freq < 5270 { // Channels 36-48
-			return ((freq - 5180) / 20) + 36
-		} else { // Channels 149-165
-			return ((freq - 5745) / 20) + 149
-		}
-	} else if freq >= 5950 && freq <= 7115 { // 6 GHz Wi-Fi
-		return ((freq - 5950) / 5) + 1
+	} else if freq >= 5035 && freq <= 5865 {
+		return ((freq - 5035) / 5) + 7
+	} else if freq >= 5875 && freq <= 5895 {
+		return 177
+	} else if freq >= 5955 && freq <= 7115 { // 6GHz
+		return ((freq - 5955) / 5) + 1
 	}
 	return 0
 }
@@ -38,12 +36,17 @@ func Dot11Chan2Freq(channel int) int {
 		return ((channel - 1) * 5) + 2412
 	} else if channel == 14 {
 		return 2484
-	} else if channel <= 173 {
+		//	} else if channel >= 36 && channel <= 173 { // OLD approach
+	} else if channel == 36 || channel == 40 || channel == 44 || channel == 48 || channel == 52 || channel == 56 || channel == 60 ||
+		channel == 64 || channel == 100 || channel == 104 || channel == 108 || channel == 112 || channel == 116 ||
+		channel == 120 || channel == 124 || channel == 128 || channel == 132 || channel == 136 || channel == 140 ||
+		channel == 144 || channel == 149 || channel == 153 || channel == 157 || channel == 161 || channel == 165 ||
+		channel == 169 || channel == 173 {
 		return ((channel - 7) * 5) + 5035
 	} else if channel == 177 {
 		return 5885
-	} else if channel >= 1 && channel <= 233 {
-		return ((channel - 1) * 5) + 5950
+	} else if channel <= 233 {
+		return ((channel - 1) * 5) + 5955
 	}
 
 	return 0
