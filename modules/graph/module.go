@@ -49,7 +49,7 @@ type Module struct {
 	gw       *Node
 	iface    *Node
 	eventBus session.EventBus
-	wLock    sync.Mutex
+	wLock    sync.RWMutex
 }
 
 func init() {

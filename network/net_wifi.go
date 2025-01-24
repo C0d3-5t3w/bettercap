@@ -8,7 +8,7 @@ const NO_CHANNEL = -1
 
 var (
 	currChannels    = make(map[string]int)
-	currChannelLock = sync.Mutex{}
+	currChannelLock = sync.RWMutex{}
 )
 
 func GetInterfaceChannel(iface string) int {

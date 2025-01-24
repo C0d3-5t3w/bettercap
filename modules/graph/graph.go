@@ -17,7 +17,7 @@ type NodeCallback func(*Node)
 type EdgeCallback func(*Node, []Edge, *Node)
 
 type Graph struct {
-	sync.Mutex
+	sync.RWMutex
 
 	path  string
 	edges *Edges

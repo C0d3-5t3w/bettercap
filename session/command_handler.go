@@ -8,7 +8,7 @@ import (
 )
 
 type CommandHandler struct {
-	*sync.Mutex
+	*sync.RWMutex
 	Name        string
 	Description string
 	Completer   *readline.PrefixCompleter
@@ -18,7 +18,7 @@ type CommandHandler struct {
 
 func NewCommandHandler(name string, expr string, desc string, exec func(args []string, s *Session) error) CommandHandler {
 	return CommandHandler{
-		Mutex:       &sync.Mutex{},
+		RWMutex:     &sync.RWMutex{},
 		Name:        name,
 		Description: desc,
 		Completer:   nil,

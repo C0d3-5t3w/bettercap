@@ -8,7 +8,7 @@ import (
 
 var (
 	certCache = make(map[string]*tls.Certificate)
-	certLock  = &sync.Mutex{}
+	certLock  = &sync.RWMutex{}
 )
 
 func keyFor(domain string, port int) string {

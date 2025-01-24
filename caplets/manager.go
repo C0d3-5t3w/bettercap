@@ -14,7 +14,7 @@ import (
 
 var (
 	cache     = make(map[string]*Caplet)
-	cacheLock = sync.Mutex{}
+	cacheLock = sync.RWMutex{}
 )
 
 func List() []*Caplet {
@@ -45,6 +45,13 @@ func List() []*Caplet {
 }
 
 func Load(name string) (*Caplet, error) {
+	cacheLock.RLock()
+	if caplet, found := cache[name]; found {
+		cacheLock.RUnlock()
+		return caplet, nil
+	}
+	cacheLock.RUnlock()
+
 	cacheLock.Lock()
 	defer cacheLock.Unlock()
 

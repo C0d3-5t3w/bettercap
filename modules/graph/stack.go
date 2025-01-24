@@ -8,7 +8,7 @@ type entry struct {
 }
 
 type Stack struct {
-	lock *sync.Mutex
+	lock *sync.RWMutex
 	head *entry
 	Size int
 }
@@ -42,6 +42,6 @@ func (stk *Stack) Pop() interface{} {
 
 func NewStack() *Stack {
 	stk := new(Stack)
-	stk.lock = &sync.Mutex{}
+	stk.lock = &sync.RWMutex{}
 	return stk
 }

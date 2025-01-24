@@ -51,20 +51,20 @@ func (w PrintWriter) Write(p []byte) (n int, err error) {
 }
 
 type EventPool struct {
-	*sync.Mutex
+	*sync.RWMutex
 
 	debug     bool
 	silent    bool
 	events    []Event
 	listeners []chan Event
-	printLock sync.Mutex
+	printLock sync.RWMutex
 	printCbs  []PrintCallback
 	Stdout    PrintWriter
 }
 
 func NewEventPool(debug bool, silent bool) *EventPool {
 	pool := &EventPool{
-		Mutex:     &sync.Mutex{},
+		RWMutex:   &sync.RWMutex{},
 		debug:     debug,
 		silent:    silent,
 		events:    make([]Event, 0),

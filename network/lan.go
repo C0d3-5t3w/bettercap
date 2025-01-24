@@ -16,7 +16,7 @@ type EndpointNewCallback func(e *Endpoint)
 type EndpointLostCallback func(e *Endpoint)
 
 type LAN struct {
-	sync.Mutex
+	sync.RWMutex
 	hosts   map[string]*Endpoint
 	iface   *Endpoint
 	gateway *Endpoint

@@ -14,7 +14,7 @@ import (
 type EnvironmentChangedCallback func(newValue string)
 
 type Environment struct {
-	sync.Mutex
+	sync.RWMutex
 	Data map[string]string `json:"data"`
 	cbs  map[string]EnvironmentChangedCallback
 }

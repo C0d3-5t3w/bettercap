@@ -151,7 +151,7 @@ type Server struct {
 	ifaces   []net.Interface
 
 	shouldShutdown chan struct{}
-	shutdownLock   sync.Mutex
+	shutdownLock   sync.RWMutex
 	shutdownEnd    sync.WaitGroup
 	isShutdown     bool
 	ttl            uint32

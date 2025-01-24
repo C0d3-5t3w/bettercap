@@ -67,7 +67,7 @@ type WiFiModule struct {
 	probeMac            net.HardwareAddr
 	writes              *sync.WaitGroup
 	reads               *sync.WaitGroup
-	chanLock            *sync.Mutex
+	chanLock            *sync.RWMutex
 	selector            *utils.ViewSelector
 }
 
@@ -100,7 +100,7 @@ func NewWiFiModule(s *session.Session) *WiFiModule {
 		shakesAggregate: true,
 		writes:          &sync.WaitGroup{},
 		reads:           &sync.WaitGroup{},
-		chanLock:        &sync.Mutex{},
+		chanLock:        &sync.RWMutex{},
 	}
 
 	mod.InitState("channels")

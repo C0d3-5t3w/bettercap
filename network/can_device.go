@@ -7,7 +7,7 @@ import (
 )
 
 type CANDevice struct {
-	sync.Mutex
+	sync.RWMutex
 	LastSeen    time.Time
 	Name        string
 	Description string

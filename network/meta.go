@@ -11,7 +11,7 @@ import (
 )
 
 type Meta struct {
-	sync.Mutex
+	sync.RWMutex
 	m map[string]interface{}
 }
 

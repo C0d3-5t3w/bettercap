@@ -22,7 +22,7 @@ type Trigger struct {
 }
 
 type TriggerList struct {
-	sync.Mutex
+	sync.RWMutex
 	triggers map[string]Trigger
 }
 

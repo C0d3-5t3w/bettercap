@@ -83,7 +83,7 @@ type NTLMResponseHeader struct {
 }
 
 type NTLMState struct {
-	sync.Mutex
+	sync.RWMutex
 
 	Responses map[uint32]string
 	Pairs     []NTLMChallengeResponse
