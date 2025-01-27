@@ -56,8 +56,13 @@ func (mod *RestAPI) streamWriter(ws *websocket.Conn, w http.ResponseWriter, r *h
 	n := len(events)
 	if n > 0 {
 		mod.Debug("Sending %d events.", n)
-		for _, event := range events {
-			if err := mod.streamEvent(ws, event); err != nil {
+		for i, event := range events {
+			if i < n {
+				if err := mod.streamEvent(ws, event); err != nil {
+					return
+				}
+			} else {
+				mod.Error("Index out of range: %d, length: %d", i, n)
 				return
 			}
 		}
