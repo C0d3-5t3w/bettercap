@@ -82,7 +82,7 @@ func TestNewEventPool(t *testing.T) {
 
 func TestEventPool_SetSilent(t *testing.T) {
 	type fields struct {
-		Mutex     *sync.RWMutex
+		Mutex     *sync.Mutex
 		debug     bool
 		silent    bool
 		events    []Event
@@ -98,39 +98,39 @@ func TestEventPool_SetSilent(t *testing.T) {
 	}{
 		{
 			name:   "Set silent on non-silent event pool",
-			fields: fields{silent: false, debug: false, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: false, Mutex: &sync.Mutex{}},
 			args:   args{s: true},
 		},
 		{
 			name:   "Set silent on silent event pool",
-			fields: fields{silent: true, debug: false, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: true, debug: false, Mutex: &sync.Mutex{}},
 			args:   args{s: true},
 		},
 		{
 			name:   "Set non-silent on non-silent event pool",
-			fields: fields{silent: false, debug: false, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: false, Mutex: &sync.Mutex{}},
 			args:   args{s: false},
 		},
 		{
 			name:   "Set silent on silent event pool",
-			fields: fields{silent: true, debug: false, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: true, debug: false, Mutex: &sync.Mutex{}},
 			args:   args{s: false},
 		},
 		{
 			name:   "Set silent on non-silent and debug event pool",
-			fields: fields{silent: false, debug: true, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: true, Mutex: &sync.Mutex{}},
 			args:   args{s: true},
 		},
 		{
 			name:   "Set non-silent on non-silent and debug event pool",
-			fields: fields{silent: false, debug: true, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: true, Mutex: &sync.Mutex{}},
 			args:   args{s: false},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := &EventPool{
-				RWMutex:   tt.fields.Mutex,
+				Mutex:     tt.fields.Mutex,
 				debug:     tt.fields.debug,
 				silent:    tt.fields.silent,
 				events:    tt.fields.events,
@@ -146,7 +146,7 @@ func TestEventPool_SetSilent(t *testing.T) {
 
 func TestEventPool_SetDebug(t *testing.T) {
 	type fields struct {
-		Mutex     *sync.RWMutex
+		Mutex     *sync.Mutex
 		debug     bool
 		silent    bool
 		events    []Event
@@ -164,39 +164,39 @@ func TestEventPool_SetDebug(t *testing.T) {
 	}{
 		{
 			name:   "Set debug on non-debug event pool",
-			fields: fields{silent: false, debug: false, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: false, Mutex: &sync.Mutex{}},
 			args:   args{s: true},
 		},
 		{
 			name:   "Set debug on debug event pool",
-			fields: fields{silent: false, debug: true, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: true, Mutex: &sync.Mutex{}},
 			args:   args{s: true},
 		},
 		{
 			name:   "Set non-debug on non-debug event pool",
-			fields: fields{silent: false, debug: false, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: false, Mutex: &sync.Mutex{}},
 			args:   args{s: false},
 		},
 		{
 			name:   "Set non-debug on debug event pool",
-			fields: fields{silent: false, debug: true, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: true, Mutex: &sync.Mutex{}},
 			args:   args{s: false},
 		},
 		{
 			name:   "Set silent on non-silent and debug event pool",
-			fields: fields{silent: false, debug: true, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: true, Mutex: &sync.Mutex{}},
 			args:   args{s: true},
 		},
 		{
 			name:   "Set non-silent on non-silent and debug event pool",
-			fields: fields{silent: false, debug: true, Mutex: &sync.RWMutex{}},
+			fields: fields{silent: false, debug: true, Mutex: &sync.Mutex{}},
 			args:   args{s: true},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := &EventPool{
-				RWMutex:   tt.fields.Mutex,
+				Mutex:     tt.fields.Mutex,
 				debug:     tt.fields.debug,
 				silent:    tt.fields.silent,
 				events:    tt.fields.events,
@@ -212,7 +212,7 @@ func TestEventPool_SetDebug(t *testing.T) {
 
 func TestEventPool_Clear(t *testing.T) {
 	type fields struct {
-		Mutex     *sync.RWMutex
+		Mutex     *sync.Mutex
 		debug     bool
 		silent    bool
 		events    []Event
@@ -225,17 +225,17 @@ func TestEventPool_Clear(t *testing.T) {
 	}{
 		{
 			name:   "Clear events on empty list",
-			fields: fields{debug: false, silent: false, events: []Event{}, Mutex: &sync.RWMutex{}},
+			fields: fields{debug: false, silent: false, events: []Event{}, Mutex: &sync.Mutex{}},
 		},
 		{
 			name:   "Clear events",
-			fields: fields{debug: false, silent: false, events: []Event{{Tag: "meh", Data: "something", Time: time.Now()}}, Mutex: &sync.RWMutex{}},
+			fields: fields{debug: false, silent: false, events: []Event{{Tag: "meh", Data: "something", Time: time.Now()}}, Mutex: &sync.Mutex{}},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := &EventPool{
-				RWMutex:   tt.fields.Mutex,
+				Mutex:     tt.fields.Mutex,
 				debug:     tt.fields.debug,
 				silent:    tt.fields.silent,
 				events:    tt.fields.events,
@@ -251,7 +251,7 @@ func TestEventPool_Clear(t *testing.T) {
 
 func TestEventPool_Add(t *testing.T) {
 	type fields struct {
-		Mutex     *sync.RWMutex
+		Mutex     *sync.Mutex
 		debug     bool
 		silent    bool
 		events    []Event
@@ -268,19 +268,19 @@ func TestEventPool_Add(t *testing.T) {
 	}{
 		{
 			name:   "Add event with nil data on empty event list",
-			fields: fields{debug: false, silent: false, events: []Event{}, Mutex: &sync.RWMutex{}},
+			fields: fields{debug: false, silent: false, events: []Event{}, Mutex: &sync.Mutex{}},
 			args:   args{tag: "tag with empty data", data: nil},
 		},
 		{
 			name:   "Add event with nil data",
-			fields: fields{debug: false, silent: false, events: []Event{{Tag: "meh", Data: "something", Time: time.Now()}}, Mutex: &sync.RWMutex{}},
+			fields: fields{debug: false, silent: false, events: []Event{{Tag: "meh", Data: "something", Time: time.Now()}}, Mutex: &sync.Mutex{}},
 			args:   args{tag: "tag with empty data", data: nil},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := &EventPool{
-				RWMutex:   tt.fields.Mutex,
+				Mutex:     tt.fields.Mutex,
 				debug:     tt.fields.debug,
 				silent:    tt.fields.silent,
 				events:    tt.fields.events,

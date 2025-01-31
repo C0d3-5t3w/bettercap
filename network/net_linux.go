@@ -16,7 +16,7 @@ func getInterfaceName(iface net.Interface) string {
 	return iface.Name
 }
 
-// ForceMonitorMode See https://github.com/bettercap/bettercap/issues/819
+// See https://github.com/bettercap/bettercap/issues/819
 func ForceMonitorMode(iface string) error {
 	_, _ = core.Exec("ip", []string{"link", "set", iface, "down"})
 
@@ -24,7 +24,7 @@ func ForceMonitorMode(iface string) error {
 	if err != nil {
 		return fmt.Errorf("iw: out=%s err=%s", out, err)
 	} else if out != "" {
-		return fmt.Errorf("unexpected output while setting interface %s into monitor mode: %s", iface, out)
+		return fmt.Errorf("Unexpected output while setting interface %s into monitor mode: %s", iface, out)
 	}
 
 	_, _ = core.Exec("ip", []string{"link", "set", iface, "up"})
@@ -40,14 +40,12 @@ func SetInterfaceChannel(iface string, channel int) error {
 	}
 
 	if core.HasBinary("iw") {
-		// Debug("*** SetInterfaceChannel(%s, %d) iw based ***", iface, channel)
-		// out, err := core.Exec("iw", []string{"dev", iface, "set", "channel", fmt.Sprintf("%d", channel)})
-		out, err := core.Exec("iw", []string{"dev", iface, "set", "freq", fmt.Sprintf("%d", Dot11Chan2Freq(channel))})
-
+		// Debug("SetInterfaceChannel(%s, %d) iw based", iface, channel)
+		out, err := core.Exec("iw", []string{"dev", iface, "set", "channel", fmt.Sprintf("%d", channel)})
 		if err != nil {
 			return fmt.Errorf("iw: out=%s err=%s", out, err)
 		} else if out != "" {
-			return fmt.Errorf("unexpected output while setting interface %s to channel %d: %s", iface, channel, out)
+			return fmt.Errorf("Unexpected output while setting interface %s to channel %d: %s", iface, channel, out)
 		}
 	} else if core.HasBinary("iwconfig") {
 		// Debug("SetInterfaceChannel(%s, %d) iwconfig based")
@@ -55,7 +53,7 @@ func SetInterfaceChannel(iface string, channel int) error {
 		if err != nil {
 			return fmt.Errorf("iwconfig: out=%s err=%s", out, err)
 		} else if out != "" {
-			return fmt.Errorf("unexpected output while setting interface %s to channel %d: %s", iface, channel, out)
+			return fmt.Errorf("Unexpected output while setting interface %s to channel %d: %s", iface, channel, out)
 		}
 	} else {
 		return fmt.Errorf("no iw or iwconfig binaries found in $PATH")
@@ -91,11 +89,7 @@ func iwlistSupportedFrequencies(iface string) ([]int, error) {
 }
 
 var iwPhyParser = regexp.MustCompile(`^\s*wiphy\s+(\d+)$`)
-
-// var iwFreqParser = regexp.MustCompile(`^\s+\*\s+(\d+)\s+MHz.+dBm.+$`)
-var iwFreqParser = regexp.MustCompile(`^\s+\*\s+(\d+)\.\d+\s+MHz.+dBm.+$`)
-
-// * 5995.0 MHz [9] (12.0 dBm) (no IR)
+var iwFreqParser = regexp.MustCompile(`^\s+\*\s+(\d+)\s+MHz.+dBm.+$`)
 
 func iwSupportedFrequencies(iface string) ([]int, error) {
 	// first determine phy index
@@ -132,7 +126,6 @@ func iwSupportedFrequencies(iface string) ([]int, error) {
 	for scanner.Scan() {
 		line := scanner.Text()
 		matches := iwFreqParser.FindStringSubmatch(line)
-		// Debug("line = %s / matches = %s", line, matches)
 		if len(matches) == 2 {
 			if freq, err := strconv.ParseInt(matches[1], 10, 64); err != nil {
 				return nil, fmt.Errorf("error parsing %s freq: %v (line: %s)", iface, err, line)
@@ -146,13 +139,12 @@ func iwSupportedFrequencies(iface string) ([]int, error) {
 }
 
 func GetSupportedFrequencies(iface string) ([]int, error) {
-	return iwSupportedFrequencies(iface)
 	// give priority to iwlist because of https://github.com/bettercap/bettercap/issues/881
-	//	if core.HasBinary("iwlist") {
-	//		return iwlistSupportedFrequencies(iface)
-	//	} else if core.HasBinary("iw") {
-	//		return iwSupportedFrequencies(iface)
-	//	}
-	//
-	//	return nil, fmt.Errorf("no iw or iwlist binaries found in $PATH")
+	if core.HasBinary("iwlist") {
+		return iwlistSupportedFrequencies(iface)
+	} else if core.HasBinary("iw") {
+		return iwSupportedFrequencies(iface)
+	}
+
+	return nil, fmt.Errorf("no iw or iwlist binaries found in $PATH")
 }

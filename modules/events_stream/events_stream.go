@@ -16,7 +16,7 @@ import (
 )
 
 type rotation struct {
-	sync.RWMutex
+	sync.Mutex
 	Enabled  bool
 	Compress bool
 	Format   string

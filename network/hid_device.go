@@ -39,7 +39,7 @@ func (t HIDType) String() string {
 type HIDPayload []byte
 
 type HIDDevice struct {
-	sync.RWMutex
+	sync.Mutex
 	LastSeen   time.Time
 	Type       HIDType
 	Alias      string
