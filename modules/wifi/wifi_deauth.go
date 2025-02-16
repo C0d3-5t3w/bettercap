@@ -13,7 +13,7 @@ import (
 
 func (mod *WiFiModule) sendDeauthPacket(ap net.HardwareAddr, client net.HardwareAddr) {
 	for seq := uint16(0); seq < 64 && mod.Running(); seq++ {
-		time.Sleep(10 * time.Millisecond)
+		time.Sleep(10 * time.Millisecond) //add delay to avoid bettercap injection error -5T3W
 		if err, pkt := packets.NewDot11Deauth(ap, client, ap, seq); err != nil {
 			mod.Error("could not create deauth packet: %s", err)
 			continue

@@ -97,6 +97,7 @@ func (mod *WiFiModule) startProbing(staMac net.HardwareAddr, ssid string) error 
 	}
 
 	for seq := uint16(0); seq < 5 && mod.Running(); seq++ {
+		time.Sleep(10 * time.Millisecond) // Add delay here -5T3W
 		if err, pkt := packets.NewDot11ProbeRequest(staMac, seq, ssid, network.GetInterfaceChannel(mod.iface.Name())); err != nil {
 			mod.Error("could not create probe packet: %s", err)
 			continue

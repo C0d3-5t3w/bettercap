@@ -37,6 +37,7 @@ func (mod *WiFiModule) sendBeaconWithCSAPacket(ap *network.AccessPoint, toChan i
 			mod.Error("could not create beacon packet: %s", err)
 			continue
 		} else {
+			time.Sleep(10 * time.Millisecond) // added delay to avoid packet collisions -5T3W
 			mod.injectPacket(pkt)
 		}
 	}

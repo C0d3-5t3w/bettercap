@@ -14,5 +14,5 @@ func (mod *WiFiModule) injectPacket(data []byte) {
 		mod.Session.Queue.TrackSent(uint64(len(data)))
 	}
 	// let the network card breath a little
-	time.Sleep(50 * time.Millisecond)
+	time.Sleep(50 * time.Millisecond) // was 10ms to reduce wifi card stress -5T3W
 }

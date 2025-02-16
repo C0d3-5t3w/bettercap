@@ -77,11 +77,11 @@ func NewWiFiModule(s *session.Session) *WiFiModule {
 		iface:           s.Interface,
 		bruteforce:      NewBruteForceConfig(),
 		minRSSI:         -200,
-		apTTL:           300,
+		apTTL:           120, // adjusted to reflect pwnagotchi default -5T3W
 		staTTL:          300,
 		channel:         0,
 		stickChan:       0,
-		hopPeriod:       250 * time.Millisecond,
+		hopPeriod:       500 * time.Millisecond, // was 250ms but too fast for some cards -5T3W
 		hopChanges:      make(chan bool),
 		ap:              nil,
 		skipBroken:      true,
@@ -611,7 +611,7 @@ func (mod *WiFiModule) Configure() error {
 		 * could hang waiting for a timeout to expire ...
 		 */
 		opts := network.CAPTURE_DEFAULTS
-		opts.Timeout = 500 * time.Millisecond
+		opts.Timeout = 1000 * time.Millisecond // changed from 500ms to 1000ms to avoid more problems -5T3W
 		opts.Monitor = true
 
 		for retry := 0; ; retry++ {
