@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"net"
 	"sort"
+	"time"
 
 	"github.com/bettercap/bettercap/v2/network"
 	"github.com/bettercap/bettercap/v2/packets"
 )
 
 func (mod *WiFiModule) sendAssocPacket(ap *network.AccessPoint) {
+	time.Sleep(10 * time.Millisecond) // Add delay here
 	if err, pkt := packets.NewDot11Auth(mod.iface.HW, ap.HW, 1); err != nil {
 		mod.Error("cloud not create auth packet: %s", err)
 	} else {

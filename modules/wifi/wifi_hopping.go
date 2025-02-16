@@ -71,8 +71,8 @@ func (mod *WiFiModule) channelHopper() {
 		// if we have both 2.4 and 5ghz capabilities, we have
 		// more channels, therefore we need to increase the time
 		// we hop on each one otherwise me lose information
-		if len(mod.frequencies) > 14 {
-			delay = delay * 2
+		if len(mod.frequencies) > 14 {	
+			delay = delay * 3 // was 2
 		}
 
 		frequencies := mod.frequencies
